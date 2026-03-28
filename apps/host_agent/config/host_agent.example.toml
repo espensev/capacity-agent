@@ -1,0 +1,26 @@
+[machine]
+machine_id = "snd-host"
+display_name = "SND-HOST"
+
+[storage]
+sqlite_path = "data/runtime/host_agent.db"
+schema_path = "apps/host_agent/sql/schema.sql"
+
+[ipc.librehw]
+pipe_name = "ollama_host_agent_lhm"
+sample_interval_ms = 1000
+reconnect_backoff_ms = 2000
+
+[collectors.gpu]
+enabled = true
+backend = "nvml_nvapi"
+sample_interval_ms = 500
+
+[collectors.ollama]
+enabled = true
+base_url = "http://127.0.0.1:11434"
+sample_interval_ms = 1000
+
+[api.local]
+bind = "127.0.0.1"
+port = 8089

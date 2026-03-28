@@ -1,0 +1,22 @@
+.vs/
+CMakeUserPresets.json
+.dotnet-home/
+.dotnet_home/
+.nuget/
+
+# Build output
+out/*
+!out/.gitignore
+
+# Runtime data
+data/runtime/*
+!data/runtime/.gitignore
+
+# IDE / editor
+.vscode/
+.idea/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal

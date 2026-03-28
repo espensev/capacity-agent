@@ -1,0 +1,38 @@
+# Build output
+/build/
+/out/
+/dist/
+
+# Compiler and linker artifacts
+*.obj
+*.pdb
+*.ilk
+*.iobj
+*.ipdb
+*.lib.recipe
+*.tlog
+*.lastbuildstate
+*.cache
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CMakeUserPresets.json
+
+# IDE / editor
+.vs/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local agent state
+.claude/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
