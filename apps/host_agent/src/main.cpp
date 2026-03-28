@@ -59,7 +59,8 @@ void PrintUsage() {
         << L"host_agent [--pipe-name <name>] [--schema-path <path>] [--db-path <path>]\n"
         << L"           [--machine-id <id>] [--api-bind <addr>] [--api-port <port>]\n"
         << L"           [--ollama-url <url>] [--ollama-poll-ms <ms>]\n"
-        << L"           [--gpu-sample-ms <ms>] [--no-gpu] [--no-ollama]\n";
+        << L"           [--gpu-sample-ms <ms>] [--no-gpu] [--no-ollama]\n"
+        << L"           [--push-url <url>] [--push-interval-ms <ms>]\n";
 }
 
 }  // namespace
@@ -110,6 +111,10 @@ int wmain(int argc, wchar_t** argv) {
             config.ollama.poll_interval_ms = std::stoi(value);
         } else if (arg == L"--gpu-sample-ms") {
             config.gpu.sample_interval_ms = std::stoi(value);
+        } else if (arg == L"--push-url") {
+            config.push.url = WideToUtf8(value);
+        } else if (arg == L"--push-interval-ms") {
+            config.push.interval_ms = std::stoi(value);
         } else {
             std::wcerr << L"Unknown argument: " << arg << L"\n";
             PrintUsage();

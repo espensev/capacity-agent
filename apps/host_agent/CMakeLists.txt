@@ -11,6 +11,7 @@ set(HOST_AGENT_SOURCES
     src/ipc/named_pipe_server_win32.cpp
     src/storage/sqlite_store.cpp
     src/api/http_server.cpp
+    src/core/snapshot_pusher.cpp
     src/collectors/direct_gpu_collector.cpp
     src/collectors/ollama_runtime_collector.cpp
 )

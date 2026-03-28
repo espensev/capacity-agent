@@ -22,6 +22,11 @@ struct OllamaCollectorConfig {
     int poll_interval_ms = 1000;
 };
 
+struct PushConfig {
+    std::string url;  // empty = disabled
+    int interval_ms = 5000;
+};
+
 struct ServiceConfig {
     std::wstring pipe_name = L"ollama_host_agent_lhm";
     std::filesystem::path schema_path = "apps/host_agent/sql/schema.sql";
@@ -30,6 +35,7 @@ struct ServiceConfig {
     ApiConfig api;
     GpuCollectorConfig gpu;
     OllamaCollectorConfig ollama;
+    PushConfig push;
 };
 
 struct CollectorHealthUpdate {

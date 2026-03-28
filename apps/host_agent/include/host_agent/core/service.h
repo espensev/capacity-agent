@@ -4,6 +4,7 @@
 #include "host_agent/api/http_server.h"
 #include "host_agent/collectors/direct_gpu_collector.h"
 #include "host_agent/collectors/ollama_runtime_collector.h"
+#include "host_agent/core/snapshot_pusher.h"
 #include "host_agent/ipc/named_pipe_server.h"
 #include "host_agent/model/telemetry_models.h"
 #include "host_agent/storage/sqlite_store.h"
@@ -30,6 +31,7 @@ private:
     api::HttpServer http_server_;
     std::unique_ptr<collectors::DirectGpuCollector> gpu_collector_;
     std::unique_ptr<collectors::OllamaRuntimeCollector> ollama_collector_;
+    std::unique_ptr<SnapshotPusher> snapshot_pusher_;
     std::atomic<bool> running_{false};
 };
 

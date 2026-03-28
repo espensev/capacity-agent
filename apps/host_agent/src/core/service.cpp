@@ -73,6 +73,14 @@ bool Service::Run() {
         }
     }
 
+    // Start snapshot pusher if configured
+    if (!config_.push.url.empty()) {
+        snapshot_pusher_ = std::make_unique<SnapshotPusher>(config_.push, config_.api);
+        snapshot_pusher_->Start();
+        std::cout << "Snapshot pusher started (url: " << config_.push.url
+                  << ", interval: " << config_.push.interval_ms << "ms)\n";
+    }
+
     // Run pipe server on main thread (blocks until Stop() or pipe error)
     const bool pipe_ok = pipe_server_.Run([this](std::string_view message) {
         HandlePipeMessage(message);
@@ -80,6 +88,7 @@ bool Service::Run() {
 
     // If pipe server exits, stop everything
     running_.store(false);
+    if (snapshot_pusher_) snapshot_pusher_->Stop();
     if (gpu_collector_) gpu_collector_->Stop();
     if (ollama_collector_) ollama_collector_->Stop();
     http_server_.Stop();
@@ -90,6 +99,7 @@ bool Service::Run() {
 void Service::Stop() {
     running_.store(false);
     pipe_server_.Stop();
+    if (snapshot_pusher_) snapshot_pusher_->Stop();
     if (gpu_collector_) gpu_collector_->Stop();
     if (ollama_collector_) ollama_collector_->Stop();
     http_server_.Stop();
