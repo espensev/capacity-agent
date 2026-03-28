@@ -81,19 +81,30 @@ bool Service::Run() {
                   << ", interval: " << config_.push.interval_ms << "ms)\n";
     }
 
-    // Run pipe server on main thread (blocks until Stop() or pipe error)
-    const bool pipe_ok = pipe_server_.Run([this](std::string_view message) {
-        HandlePipeMessage(message);
+    // Run pipe server on its own thread (non-blocking)
+    pipe_thread_ = std::thread([this]() {
+        pipe_server_.Run([this](std::string_view message) {
+            HandlePipeMessage(message);
+        });
     });
 
-    // If pipe server exits, stop everything
-    running_.store(false);
+    std::cout << "host_agent running. Ctrl+C to stop.\n";
+
+    // Main thread waits for shutdown signal
+    while (running_.load()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    }
+
+    // Stop everything
+    pipe_server_.Stop();
+    if (pipe_thread_.joinable()) pipe_thread_.join();
     if (snapshot_pusher_) snapshot_pusher_->Stop();
     if (gpu_collector_) gpu_collector_->Stop();
     if (ollama_collector_) ollama_collector_->Stop();
     http_server_.Stop();
 
-    return pipe_ok;
+    std::cout << "host_agent stopped.\n";
+    return true;
 }
 
 void Service::Stop() {

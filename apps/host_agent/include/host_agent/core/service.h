@@ -32,6 +32,7 @@ private:
     std::unique_ptr<collectors::DirectGpuCollector> gpu_collector_;
     std::unique_ptr<collectors::OllamaRuntimeCollector> ollama_collector_;
     std::unique_ptr<SnapshotPusher> snapshot_pusher_;
+    std::thread pipe_thread_;
     std::atomic<bool> running_{false};
 };
 
